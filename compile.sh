@@ -1,0 +1,1 @@
+emcc -O3 simple_1d_wrapper.c libfftw3.a -o simple_1d_wrapper.html -s BUILD_AS_WORKER=0 -s ASMJS=1 -s INVOKE_RUN=0 -s EXPORTED_FUNCTIONS="['_fft_forward', '_fft_inverse']"
