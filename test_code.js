@@ -40,3 +40,7 @@ fft(N, heap_tf.byteOffset, heap_re.byteOffset, heap_im.byteOffset);
 
 var res_re = new Float64Array(heap_re.buffer, heap_re.byteOffset, re.length);
 var res_im = new Float64Array(heap_im.buffer, heap_im.byteOffset, im.length);
+
+for (var i=0; i<res_re.length; i++) {
+	Module.print(res_re[i]+"\t\t\t"+res_im[i])
+}
