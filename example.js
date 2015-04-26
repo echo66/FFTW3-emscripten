@@ -1,4 +1,4 @@
-function FFT(size) {
+function FFTWJS(size) {
 
 	var fft_forward = Module.cwrap(
 		'fft_forward', 'void', ['number', 'number', 'number', 'number']
