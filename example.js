@@ -40,7 +40,7 @@ function FFT(size) {
 
 	this.inverse = function(inRealData, inImagData) {
 
-		var outTimeData = new Float64Array(2048);
+		var outTimeData = new Float64Array(inRealData.length * 2 + 1);
 		var size = outTimeData.length;
 		var sizeHalf = ((size/2) + 1);
 		// var re = new Float64Array(sizeHalf);
