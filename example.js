@@ -35,7 +35,14 @@ function FFT(size) {
 		var res_re = new Float64Array(heap_re.buffer, heap_re.byteOffset, re.length);
 		var res_im = new Float64Array(heap_im.buffer, heap_im.byteOffset, im.length);
 
-		return res_re;
+		Module._free(ptr_re);
+		Module._free(ptr_im);
+		Module._free(ptr_tf);
+
+		return [
+			res_re,
+			res_im
+		];
 	}
 
 	this.inverse = function(inRealData, inImagData) {
@@ -65,8 +72,6 @@ function FFT(size) {
 
 		var res_time = new Float64Array(heap_tf.buffer, heap_tf.byteOffset, outTimeData.length);
 
-		return {
-			time: res_time
-		}
+		return res_time;
 	}
 }
