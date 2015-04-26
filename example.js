@@ -40,14 +40,14 @@ function FFT(size) {
 		Module._free(ptr_tf);
 
 		return [
-			res_re,
-			res_im
+			new Float64Array(res_re),   // IT IS A HACK!
+			new Float64Array(res_im)    // IT IS A HACK!
 		];
 	}
 
 	this.inverse = function(inRealData, inImagData) {
 
-		var outTimeData = new Float64Array(inRealData.length * 2 + 1);
+		var outTimeData = new Float64Array(inRealData.length * 2 - 2);
 		var size = outTimeData.length;
 		var sizeHalf = ((size/2) + 1);
 		// var re = new Float64Array(sizeHalf);
@@ -62,15 +62,19 @@ function FFT(size) {
 
 		// Copy data to Emscripten heap (directly accessed from Module.HEAPU8)
 		var heap_re = new Uint8Array(Module.HEAPU8.buffer, ptr_re, nDataBytes);
-		heap_re.set(new Uint8Array(new Float64Array(inRealData).buffer)); // THIS IS A HACK!
+		heap_re.set(new Uint8Array(inRealData.buffer));
 		var heap_im = new Uint8Array(Module.HEAPU8.buffer, ptr_im, nDataBytes);
-		heap_im.set(new Uint8Array(new Float64Array(inImagData).buffer)); // THIS IS A HACK!
+		heap_im.set(new Uint8Array(inImagData.buffer));
 		var heap_tf = new Uint8Array(Module.HEAPU8.buffer, ptr_tf, nDataBytes2);
 		heap_tf.set(new Uint8Array(outTimeData.buffer));
 
 		fft_inverse(size, heap_re.byteOffset, heap_im.byteOffset, heap_tf.byteOffset);
 
 		var res_time = new Float64Array(heap_tf.buffer, heap_tf.byteOffset, outTimeData.length);
+
+		Module._free(ptr_re);
+		Module._free(ptr_im);
+		Module._free(ptr_tf);
 
 		return res_time;
 	}
